@@ -1,0 +1,47 @@
+# runflare.yaml - نسخه نهایی برای پروژه MERN AI
+
+# === تنظیمات عمومی پروژه ===
+project:
+  name: mern-ai
+  description: "Full Stack MERN AI Image Generation App"
+
+# === تعریف سرویس‌ها ===
+services:
+  # ۱. سرویس داکری (بک‌اند اصلی روی پورت ۳۰۰۰)
+  - name: backend-docker
+    type: docker
+    source: git
+    repo: MegaNumber/mern_image_generation
+    branch: main
+    dockerfile_path: Dockerfile
+    
+  # ۲. سرویس Node.js (بک‌اند دوم - اختیاری، روی پورت ۸۰۸۰)
+  - name: backend-nodejs
+    type: nodejs
+    source: git
+    repo: MegaNumber/mern_image_generation
+    branch: main
+    workdir: server
+    run_command: "node index.js"
+    
+  # ۳. سرویس React (فرانت‌اند)
+  - name: frontend-react
+    type: static
+    source: git
+    repo: MegaNumber/mern_image_generation
+    branch: main
+    workdir: client
+    build_command: "npm run build"
+    output_dir: dist
+    
+  # ۴. سرویس MongoDB (تنظیمات دیتابیس)
+  - name: mongodb
+    type: database
+    engine: mongodb
+    version: "8.0"
+
+# === متغیرهای محیطی مشترک (در صورت نیاز) ===
+env:
+  # اینها نمونه هستند و باید در پنل رانفلر تنظیم شوند
+  # MONGODB_URL: "your-mongodb-url"
+  # OPENAI_API_KEY: "your-openai-key"
